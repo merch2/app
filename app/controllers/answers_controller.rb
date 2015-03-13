@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   def create
     @answer = Answer.new(answers_params)
     if @answer.save
+       @answer.question_id = params[:question_id]
+       @answer.save
       redirect_to root_path
     else
       render :new

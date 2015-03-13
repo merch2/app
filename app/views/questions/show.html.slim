@@ -1,5 +1,9 @@
 h1 = @question.title
 p = @question.body
 p Ответы:
-p = link_to "Ответить", new_answer_path
+- @question.answers.each do |answer|
+  p = answer.body
+p = link_to "Ответить", new_question_answer_path(@question)
+
+
 
