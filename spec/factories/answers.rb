@@ -3,4 +3,8 @@ FactoryGirl.define do
     body "MyText"
   end
 
+  factory :invalid_answer, class: "Answer" do
+    body "12"
+  end
+
 end
