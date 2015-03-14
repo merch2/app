@@ -2,8 +2,12 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
+  let(:question) { create(:question) }
+  let(:answer) { create(:answer) }
+
   describe 'GET #new' do
-    before { get :new }
+    before { get :new, question_id: question }
+
     it 'new Answer eq @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -17,7 +21,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'valid attributes' do
       it 'save answer in db' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to show page' do
