@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
 
-  before_action :load_question, only: [:show]
+  before_action :load_question, only: [:show, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
 
   def index
     @questions = Question.all
@@ -14,11 +15,22 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(questions_params)
+    @user = current_user
+    @question = @user.questions.new(questions_params)
     if @question.save
       redirect_to @question
     else
       render :new
+    end
+  end
+
+  def destroy
+    if @question.user_id == current_user.id
+      @question.destroy
+      redirect_to root_path
+    else
+      flash[:notice] = "Вы не автор вопроса"
+      render :show
     end
   end
 
