@@ -10,8 +10,8 @@ class AnswersController < ApplicationController
     @user = current_user
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answers_params)
+    @answer.user = @user
     if @answer.save
-      @user.answers << @answer
       redirect_to @question
     else
       render :new
@@ -21,7 +21,7 @@ class AnswersController < ApplicationController
   def destroy
     @answer = Answer.find(params[:id])
     if @answer.user_id == current_user.id
-      @answer.destroy
+      @answer.destroy!
       flash[:notice] = "Ответ удален"
       redirect_to question_path(@answer.question.id)
     else

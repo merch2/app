@@ -4,12 +4,10 @@ feature 'Delete Answer' do
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
+  given(:answer) { create(:answer) }
 
-  scenario 'Юзер удаляет свой ответ' do
-    visit new_user_session_path
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+  scenario 'User delete answer' do
+    sign_in(user)
 
     visit question_path(question)
     click_on 'Ответить'
@@ -19,6 +17,14 @@ feature 'Delete Answer' do
 
     expect(page).to have_content 'Ответ удален'
 
+  end
+
+  scenario 'Delete someone else\'s answer' do
+    sign_in(user)
+    visit question_path(question)
+    click_on 'Удалить ответ'
+
+    expect(page).to have_content 'Вы не автор ответа'
   end
 
 end

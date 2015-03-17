@@ -48,12 +48,12 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
-    it 'удаляет свой ответ' do
+    it 'delete his answer' do
       post :create, question_id: question, user_id: @user, answer: attributes_for(:answer)
       expect{ delete :destroy, question_id: question, id: answer}.to change(Answer, :count).by(-1)
     end
 
-    it 'удаляет чужой ответ' do
+    it 'delete not his answer' do
       post :create, question_id: question, answer: attributes_for(:answer), user_id: 555
       expect{ delete :destroy, question_id: question, id: answer}.to_not change(Answer, :count)
     end

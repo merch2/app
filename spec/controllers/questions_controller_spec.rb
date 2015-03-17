@@ -68,11 +68,11 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
-    it 'юзер удаляет свой вопрос' do
+    it 'user delete his question' do
       question = Question.create(title:"12345", body:"12345", user_id:"#{@user.id}")
       expect{ delete :destroy, id: question }.to change(Question, :count).by(-1)
     end
-    it 'юзер удаляет чужой вопрос' do
+    it 'user delete not his question' do
       question = Question.create(title:"12345", body:"12345", user_id:555)
       expect{ delete :destroy, id: question }.to_not change(Question, :count)
     end

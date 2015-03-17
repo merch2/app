@@ -1,24 +1,18 @@
 require 'rails_helper'
 
-feature 'Sign In', %q{
-  Чтобы задавать вопросы, пользователь должен залогиниться
-  Пользователь должен иметь возможность sign in
-} do
+feature 'Sign In' do
 
   given(:user) { create(:user) }
 
-  scenario 'Ранее регистрированный пользователь пытается войти' do
-    visit new_user_session_path
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+  scenario 'Previously registered user tries to log in' do
+    sign_in(user)
 
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
 
   end
 
-  scenario 'Несуществующий пользователь пытается войти' do
+  scenario 'A non-existent user tries to log in' do
     visit new_user_session_path
     fill_in 'Email',    with: 'user_not_registered@email.com'
     fill_in 'Password', with: '123456789'

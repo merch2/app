@@ -26,7 +26,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     if @question.user_id == current_user.id
-      @question.destroy
+      @question.destroy!
       redirect_to root_path
     else
       flash[:notice] = "Вы не автор вопроса"

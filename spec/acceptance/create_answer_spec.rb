@@ -5,13 +5,8 @@ feature 'Create Answer' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'Залогиненый юзер создает ответ' do
-
-    visit new_user_session_path
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
-
+  scenario 'Auth user create answer' do
+    sign_in(user)
     visit question_path(question)
 
     click_on 'Ответить'
@@ -20,7 +15,7 @@ feature 'Create Answer' do
 
   end
 
-  scenario 'Гость создает ответ' do
+  scenario 'Guest create answer' do
     visit question_path(question)
     click_on 'Ответить'
     expect(current_path).to eq new_user_session_path

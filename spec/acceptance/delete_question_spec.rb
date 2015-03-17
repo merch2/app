@@ -5,11 +5,8 @@ feature 'Delete Question' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
 
-  scenario 'Залогиненый юзер удаляет вопрос' do
-    visit new_user_session_path
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+  scenario 'Auth user delete question' do
+    sign_in(user)
 
     visit root_path
     click_on 'add question'
@@ -21,17 +18,16 @@ feature 'Delete Question' do
     expect(current_path).to eq root_path
   end
 
-  scenario 'Гость удаляет вопрос' do
+
+
+  scenario 'Guest user delete question' do
     visit question_path(question)
     click_on 'Удалить вопрос'
     expect(current_path).to eq new_user_session_path
   end
 
-  scenario 'Залогиненый юзер удаляет не свой вопрос' do
-    visit new_user_session_path
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+  scenario 'Auth user delete not your question' do
+    sign_in(user)
 
     visit question_path(question)
     click_on 'Удалить вопрос'
