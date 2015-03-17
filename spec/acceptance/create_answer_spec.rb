@@ -11,6 +11,8 @@ feature 'Create Answer' do
 
     click_on 'Ответить'
     fill_in 'body', with: 'Test Answer'
+    save_and_open_page
+    click_on 'Create Answer'
     expect(page).to have_content 'Test Answer'
 
   end
