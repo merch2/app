@@ -8,23 +8,20 @@ feature 'Delete Answer' do
 
   scenario 'User delete answer' do
     sign_in(user)
-
+    create(:answer, question: question, user: user)
     visit question_path(question)
-    click_on 'Ответить'
-    fill_in 'body',  with: 'Test Answer'
-    click_on 'Create Answer'
-    click_on 'Удалить ответ'
-
-    expect(page).to have_content 'Ответ удален'
-
+    expect(page).to have_content 'Удалить ответ'
   end
 
   scenario 'Delete someone else\'s answer' do
     sign_in(user)
     visit question_path(question)
-    click_on 'Удалить ответ'
+    expect(page).to_not have_content 'Удалить ответ'
+  end
 
-    expect(page).to have_content 'Вы не автор ответа'
+  scenario 'Guest delete answer' do
+    visit question_path(question)
+    expect(page).to_not have_content 'Удалить ответ'
   end
 
 end
