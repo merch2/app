@@ -4,7 +4,6 @@ feature 'Delete Answer' do
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { create(:answer) }
 
   scenario 'User delete answer' do
     sign_in(user)
@@ -15,11 +14,13 @@ feature 'Delete Answer' do
 
   scenario 'Delete someone else\'s answer' do
     sign_in(user)
+    create(:answer, question: question)
     visit question_path(question)
     expect(page).to_not have_content 'Удалить ответ'
   end
 
   scenario 'Guest delete answer' do
+    create(:answer, question: question)
     visit question_path(question)
     expect(page).to_not have_content 'Удалить ответ'
   end
