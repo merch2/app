@@ -28,6 +28,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
 
     it 'new Question eq @question' do
@@ -40,6 +41,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
     context 'valid attributes' do
       it 'save question in db' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
@@ -62,5 +64,17 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+    it 'user delete his question' do
+      question = Question.create(title:"12345", body:"12345", user_id:"#{@user.id}")
+      expect{ delete :destroy, id: question }.to change(Question, :count).by(-1)
+    end
+    it 'user delete not his question' do
+      question = Question.create(title:"12345", body:"12345", user_id:555)
+      expect{ delete :destroy, id: question }.to_not change(Question, :count)
+    end
   end
 end

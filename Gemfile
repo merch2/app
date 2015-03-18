@@ -7,6 +7,7 @@ gem 'rails', '4.2.0'
 gem 'mysql2'
 gem 'pg'
 gem 'slim-rails'
+gem 'devise'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -47,5 +48,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'launchy'
 end
 

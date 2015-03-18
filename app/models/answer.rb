@@ -4,5 +4,6 @@ class Answer < ActiveRecord::Base
   validates :body, length: { minimum: 3 }
 
   belongs_to :question
+  belongs_to :user
 
 end
