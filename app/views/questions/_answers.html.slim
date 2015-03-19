@@ -1,0 +1,5 @@
+- @question.answers.each do |answer|
+  p
+    = answer.body
+    | ,
+    = link_to "Удалить ответ", question_answer_path(@question, answer.id), method: :delete unless current_user.nil? or current_user.id != answer.user_id

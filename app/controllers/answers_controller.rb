@@ -1,21 +1,13 @@
 class AnswersController < ApplicationController
 
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
-
-  def new
-    @answer = Answer.new
-  end
+  before_action :authenticate_user!, only: [:create, :destroy]
 
   def create
     @user = current_user
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answers_params)
+    @answer = @question.answers.new(answer_params)
     @answer.user = @user
-    if @answer.save
-      redirect_to @question
-    else
-      render :new
-    end
+    @answer.save
   end
 
   def destroy
@@ -32,7 +24,7 @@ class AnswersController < ApplicationController
 
   private
 
-  def answers_params
+  def answer_params
     params.require(:answer).permit(:body)
   end
 
