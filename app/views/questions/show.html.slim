@@ -13,7 +13,7 @@ p Добавить ответ:
   p= f.label :body unless current_user.nil?
   p= f.text_area :body unless current_user.nil?
   p= f.submit 'Create Answer' unless current_user.nil?
-  p= link_to 'Login', new_user_session_path
+  p= link_to 'Login', new_user_session_path if current_user.nil?
 
 p ---------------------
 
