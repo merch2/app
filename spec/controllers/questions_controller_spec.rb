@@ -73,6 +73,15 @@ RSpec.describe QuestionsController, type: :controller do
 
   end
 
+  describe 'PATCH #update' do
+    let!(:question) { create(:question) }
+    it 'assigns the requested question to @question' do
+      patch :update, id: question, question: attributes_for(:question)
+      expect(assigns(:question)).to eq question
+    end
+
+  end
+
   describe 'DELETE #destroy' do
     before { sign_in(user) }
     it 'user delete his question' do
@@ -84,4 +93,5 @@ RSpec.describe QuestionsController, type: :controller do
       expect{ delete :destroy, id: question }.to_not change(Question, :count)
     end
   end
+
 end

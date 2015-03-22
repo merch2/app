@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Create Answer' do
 
@@ -22,6 +22,14 @@ feature 'Create Answer' do
     visit question_path(question)
 
     expect(page).to have_content 'Login'
+  end
+
+  scenario 'User try create empty or invalid answer', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    click_on 'Create Answer'
+    expect(page).to have_content 'Body is too short'
   end
 
 end

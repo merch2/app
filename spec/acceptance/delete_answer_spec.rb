@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Delete Answer' do
 
@@ -9,7 +9,7 @@ feature 'Delete Answer' do
     sign_in(user)
     create(:answer, question: question, user: user)
     visit question_path(question)
-    expect(page).to have_content 'Удалить ответ'
+    expect(page).to have_content 'Удалить'
   end
 
   scenario 'Delete someone else\'s answer' do
