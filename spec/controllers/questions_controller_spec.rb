@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+
+  let(:user) { create(:user) }
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
     before { get :index }
@@ -22,13 +25,17 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
+    it 'assigns new answer for question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
     it 'render show page' do
       expect(response).to render_template :show
     end
   end
 
   describe 'GET #new' do
-    sign_in_user
+    before { sign_in(user) }
     before { get :new }
 
     it 'new Question eq @question' do
@@ -41,7 +48,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
+    before { sign_in(user) }
     context 'valid attributes' do
       it 'save question in db' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
@@ -67,9 +74,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
+    before { sign_in(user) }
     it 'user delete his question' do
-      question = Question.create(title:"12345", body:"12345", user_id:"#{@user.id}")
+      question = Question.create(title:"12345", body:"12345", user_id: user.id)
       expect{ delete :destroy, id: question }.to change(Question, :count).by(-1)
     end
     it 'user delete not his question' do
