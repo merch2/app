@@ -5,12 +5,10 @@ p
   | Описание вопроса:
   = @question.body
 p ---------------------
-p Лучший ответ:
-- unless @best.nil?
-  = @best.body
+.best
+  = render 'best'
 p ---------------------
 .answers
-  | Ответы
   = render 'answers'
 p ---------------------
 p Добавить ответ:

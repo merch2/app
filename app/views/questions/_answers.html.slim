@@ -1,15 +1,15 @@
+| Ответы
 - @question.answers.where(best: false).each do |answer|
-  - if answer.persisted?
+  p
+    = answer.body
+    |  --
+    = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
+    |  --
+    = link_to "Удалить", question_answer_path(@question, answer), method: :delete, remote: true unless current_user.nil? or current_user.id != answer.user_id
+    |  --
+    = link_to "best", question_answer_best_path(@question, answer), remote: true unless current_user.nil? or current_user.id != @question.user_id
     p
-      = answer.body
-      |  --
-      = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
-      |  --
-      = link_to "Удалить",  question_answer_path(@question, answer.id), method: :delete, remote:true unless current_user.nil? or current_user.id != answer.user_id
-      |  --
-      = link_to "best", question_answer_best_path(@question, answer) unless current_user.nil? or current_user.id != @question.user_id
-      p
-        = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-          = f.label :body, 'Answer'
-          = f.text_area :body
-          = f.submit 'Save'
+      = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+        = f.label :body, 'Answer'
+        = f.text_area :body
+        = f.submit 'Save'
