@@ -7,7 +7,7 @@
     |  --
     = link_to "Удалить", question_answer_path(@question, answer), method: :delete, remote: true unless current_user.nil? or current_user.id != answer.user_id
     |  --
-    = link_to "best", question_answer_best_path(@question, answer), remote: true unless current_user.nil? or current_user.id != @question.user_id
+    = link_to "best", best_question_answer_path(@question, answer), remote: true unless current_user.nil? or current_user.id != @question.user_id
     p
       = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.label :body, 'Answer'

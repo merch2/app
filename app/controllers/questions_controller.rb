@@ -30,8 +30,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(questions_params)
-    redirect_to question_path(@question)
+    if @question.update(questions_params)
+      redirect_to question_path(@question)
+    else
+      flash[:notice] = "Заполните все поля"
+      render :edit
+    end
   end
 
   def destroy

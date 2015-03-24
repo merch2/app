@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   root 'questions#index'
   resources :questions do
     resources :answers do
-      get 'best' => 'answers#best'
+      member do
+        get :best
+      end
     end
   end
 end
