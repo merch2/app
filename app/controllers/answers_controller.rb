@@ -22,16 +22,11 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @question.answers.update_all(best: false)
-    @answer.best = true
-    @answer.save
-
-    #@best = @question.answers.where(best: true).first
-    #@answer.best = true
-    #if @answer.save
-    #  @best.best = false
-    #  @best.save
-    #end
+    Answer.transaction do
+      @question.answers.update_all(best: false)
+      @answer.best = true
+      @answer.save
+    end
   end
 
   private
