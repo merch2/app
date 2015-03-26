@@ -1,5 +1,6 @@
 class Answer < ActiveRecord::Base
 
+  default_scope { order(:created_at) }
   validates :body, presence: true
   validates :body, length: { minimum: 3 }
 

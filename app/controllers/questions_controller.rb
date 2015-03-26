@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
 
-  before_action :load_question, only: [:show, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
 
   def index
@@ -8,7 +8,8 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.build
+    @answer = Answer.new
+    @best   = @question.answers.where(best: true).last
   end
 
   def new
@@ -22,6 +23,18 @@ class QuestionsController < ApplicationController
       redirect_to @question
     else
       render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @question.update(questions_params)
+      redirect_to question_path(@question)
+    else
+      flash[:notice] = "Заполните все поля"
+      render :edit
     end
   end
 
