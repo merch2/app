@@ -3,6 +3,7 @@ require_relative 'acceptance_helper'
 feature 'Add files to question' do
 
   given(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
 
   background do
     sign_in(user)
@@ -16,6 +17,38 @@ feature 'Add files to question' do
     click_on 'Create Question'
 
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+  end
+
+  scenario 'User add multiple files when create question', js: true do
+    fill_in 'title', with: 'Test Question'
+    fill_in 'body',  with: 'Test Body'
+    click_on 'Add more'
+    inputs = all('input[type="file"]')
+    inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
+    inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
+    click_on 'Create Question'
+
+    expect(page).to have_link 'spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb'
+  end
+
+  scenario 'EDIT QUESTION: attach 2 files', js: true do
+    visit question_path(question)
+    click_on 'Редактировать вопрос'
+    click_on 'Add file'
+    click_on 'Add file'
+    inputs = all('input[type="file"]')
+    inputs[0].set("#{Rails.root}/spec/spec_helper.rb")
+    inputs[1].set("#{Rails.root}/spec/rails_helper.rb")
+    click_on 'Update Question'
+
+
+    expect(page).to have_link 'spec_helper.rb'
+    expect(page).to have_link 'rails_helper.rb'
+  end
+
+  scenario 'EDIT QUESTION: delete attach files', js:true do
+
   end
 
 end
