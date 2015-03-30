@@ -3,7 +3,7 @@ require_relative 'acceptance_helper'
 feature 'Add files to new answer' do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given!(:answer) { create(:answer, user:user, question: question) }
+  given(:answer) { create(:answer, user:user, question: question) }
 
   background do
     sign_in(user)
@@ -16,7 +16,7 @@ feature 'Add files to new answer' do
     click_on 'Create Answer'
 
     within '.answers' do
-      expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+      expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/2/spec_helper.rb'
     end
   end
 
@@ -35,7 +35,7 @@ feature 'Add files to new answer' do
   end
 
   scenario 'EDIT ANSWER: attach files', js: true do
-    save_and_open_page
+
     click_on 'Редактировать'
     click_on 'Add file'
     click_on 'Add file'
@@ -50,8 +50,14 @@ feature 'Add files to new answer' do
     end
   end
 
-  scenario 'EDIT ANSWER: delete files' do
+  scenario 'EDIT ANSWER: delete files', js: true do
+    create(:answer, :with_files, number_of_files: 1, question: question)
+    click_on 'Редактировать'
+    click_on 'Del file'
 
+    within '.answers' do
+      expect(page).to_not have_link 'spec_helper.rb'
+    end
   end
 
 end

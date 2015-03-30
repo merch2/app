@@ -48,7 +48,11 @@ feature 'Add files to question' do
   end
 
   scenario 'EDIT QUESTION: delete attach files', js:true do
+    create(:question, :with_files, number_of_files: 1)
+    visit edit_question_path(question)
+    click_on 'Del file'
 
+    expect(page).to_not have_link 'spec_helper.rb'
   end
 
 end
