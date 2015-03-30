@@ -2,6 +2,10 @@
 - @question.answers.where(best: false).each do |answer|
   p
     = answer.body
+    p Файлы:
+    ul
+      - answer.attachments.each do |a|
+        li= link_to a.file.identifier, a.file.url
     |  --
     = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
     |  --
@@ -9,7 +13,19 @@
     |  --
     = link_to "best", best_question_answer_path(@question, answer), remote: true unless current_user.nil? or current_user.id != @question.user_id
     p
-      = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+      = nested_form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
         = f.label :body, 'Answer'
         = f.text_area :body
+        p
+          = f.fields_for :attachments do |a|
+            - attachment = a.object
+            - if attachment.new_record?
+              = a.label :file
+              = a.file_field :file
+              = a.link_to_remove "Remove this file"
+            - else
+              p
+                = attachment.file.file.filename
+                = link_to "Del file", question_attachment_path(@question, attachment), method: :delete, remote: true
+          p= f.link_to_add "Add file", :attachments
         = f.submit 'Save'
