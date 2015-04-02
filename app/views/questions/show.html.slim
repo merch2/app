@@ -8,6 +8,10 @@ p Файлы:
 ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
+p =link_to "#{@question.votes.where(user_id: current_user.id).count == 0 ? 'Голосовать' : 'Отменить голос' }", vote_question_path(@question) if current_user and @question.user != current_user
+p
+  | Всего голосов:
+  =@question.votes.count
 p ---------------------
 .best
   = render 'best'
@@ -16,7 +20,7 @@ p ---------------------
   = render 'answers'
 p ---------------------
 p Добавить ответ:
-= nested_form_for [@question, @answer], remote: true do |f|
+= nested_form_for [@question, @answer], remote: true, data: { type: :json } do |f|
   p= f.label :body, 'Your answer'  unless current_user.nil?
   .answer-errors
   p= f.text_area :body unless current_user.nil?

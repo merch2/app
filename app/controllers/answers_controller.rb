@@ -8,11 +8,25 @@ class AnswersController < ApplicationController
     @user = current_user
     @answer = @question.answers.new(answer_params)
     @answer.user = @user
-    @answer.save
+    respond_to do |format|
+      if @answer.save
+        format.html { render partial: 'questions/answers', layout: false }
+        format.json { render json: @answer }
+      else
+        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
-    @answer.update(answer_params)
+    if @answer.update(answer_params)
+      format.html { render partial: 'questions/answers', layout: false }
+      format.json { render json: @answer }
+    else
+      format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
+      format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+    end
   end
 
   def destroy
@@ -27,6 +41,17 @@ class AnswersController < ApplicationController
       @answer.best = true
       @answer.save
     end
+  end
+
+  def vote
+    if @answer.user != current_user
+      if @answer.votes.where(user_id: current_user.id).count < 1
+        @answer.votes.create(user_id: current_user.id)
+      else
+        @answer.votes.where(user_id: current_user.id).first.destroy
+      end
+    end
+    redirect_to question_path(@question)
   end
 
   private
