@@ -8,7 +8,12 @@ p Файлы:
 ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
-p =link_to "#{@question.votes.where(user_id: current_user.id).count == 0 ? 'Голосовать' : 'Отменить голос' }", vote_question_path(@question) if current_user and @question.user != current_user
+p
+  =link_to '+', vote_up_question_path(@question)
+  =@question.votes.where(like: true).count
+p
+  =link_to '-', vote_down_question_path(@question)
+  =@question.votes.where(like: false).count
 p
   | Всего голосов:
   =@question.votes.count

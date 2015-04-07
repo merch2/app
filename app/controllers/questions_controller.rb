@@ -1,6 +1,8 @@
 class QuestionsController < ApplicationController
 
-  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote]
+  include ChangeVote
+
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :vote_up, :vote_down]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
 
   def index
@@ -50,16 +52,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def vote
-    if @question.user != current_user
-      if @question.votes.where(user_id: current_user.id).count < 1
-        @question.votes.create(user_id: current_user.id)
-      else
-        @question.votes.where(user_id: current_user.id).first.destroy
-      end
-    end
-    redirect_to question_path(@question)
-  end
 
   private
 

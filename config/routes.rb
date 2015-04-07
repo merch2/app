@@ -3,12 +3,14 @@ Rails.application.routes.draw do
   root 'questions#index'
   resources :questions do
     member do
-      get :vote
+      get :vote_up
+      get :vote_down
     end
     resources :attachments
     resources :answers do
       member do
-        get :vote
+        get :vote_up
+        get :vote_down
       end
       resources :attachments
       member do

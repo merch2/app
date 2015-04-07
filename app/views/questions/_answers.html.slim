@@ -13,8 +13,8 @@
     |  --
     = link_to "best", best_question_answer_path(@question, answer), remote: true unless current_user.nil? or current_user.id != @question.user_id
     |  --
-    = link_to "#{answer.votes.where(user_id: current_user.id).count == 0 ? 'Голосовать' : 'Отменить голос' }", vote_question_answer_path(@question, answer) if current_user and answer.user != current_user
-    = "(#{answer.votes.count})"
+    = link_to "+", vote_up_question_answer_path(@question, answer)
+    = answer.votes.where(like: true).count
     p
       = nested_form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"}, data: { type: :json } do |f|
         = f.label :body, 'Answer'

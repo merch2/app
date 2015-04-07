@@ -1,5 +1,7 @@
 class AnswersController < ApplicationController
 
+  include ChangeVote
+
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :question_find
   before_action :answer_find,        except: [:create]
@@ -20,12 +22,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.update(answer_params)
-      format.html { render partial: 'questions/answers', layout: false }
-      format.json { render json: @answer }
-    else
-      format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
-      format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+    respond_to do |format|
+      if @answer.update(answer_params)
+        format.html { render partial: 'questions/answers', layout: false }
+        format.json { render json: @answer }
+      else
+        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -43,16 +47,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def vote
-    if @answer.user != current_user
-      if @answer.votes.where(user_id: current_user.id).count < 1
-        @answer.votes.create(user_id: current_user.id)
-      else
-        @answer.votes.where(user_id: current_user.id).first.destroy
-      end
-    end
-    redirect_to question_path(@question)
-  end
+
 
   private
 
