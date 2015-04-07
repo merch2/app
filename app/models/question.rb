@@ -1,6 +1,6 @@
 class Question < ActiveRecord::Base
 
-  include ChangeVote
+  include Votable
 
   validates :title, :body, presence: true
 

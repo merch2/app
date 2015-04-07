@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
 
-  include ChangeVote
+  include Votable
 
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :question_find

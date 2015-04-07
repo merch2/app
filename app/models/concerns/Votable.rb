@@ -1,7 +1,7 @@
-module ChangeVote
+module Votable
   extend ActiveSupport::Concern
 
-  Included do
+  included do
     has_many :votes, as: :votable, dependent: :destroy
   end
 
