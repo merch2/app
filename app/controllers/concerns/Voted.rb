@@ -8,7 +8,6 @@ module Voted
   def vote_up
     if @votable.liked_by(current_user)
       render 'vote'
-      #redirect_to question_path(@votable)
     else
       render :forbidden
     end
@@ -17,7 +16,6 @@ module Voted
   def vote_down
     if @votable.disliked_by(current_user)
       render 'vote'
-      #redirect_to question_path(@votable)
     else
       render :forbidden
     end

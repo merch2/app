@@ -9,7 +9,7 @@ ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
 
-=render 'votes'
+= render 'votes', object: @question, as: 'question'
 
 p
   | Всего голосов:
