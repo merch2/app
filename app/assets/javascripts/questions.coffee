@@ -7,3 +7,13 @@ $ ->
     $(this).hide();
     answer_id = $(this).data('answerId')
     $("form#edit-answer-#{answer_id}").show()
+
+  $('form.edit_answer').bind 'ajax:success', (e, data, status, xhr) ->
+    vote_count = $.parseJSON(xhr.responseText)
+    $('form#edit-answer-' + answer.id).hide()
+    $('#answer' + answer.id).html('<p>' + answer.body + '</p>')
+    $('#answer' + answer.id).show()
+  .bind 'ajax:error', (e, xhr, status, error) ->
+    errors = $.parseJSON(xhr.responseText)
+    $.each errors, (index, value) ->
+      $('.answer-errors').append(value)

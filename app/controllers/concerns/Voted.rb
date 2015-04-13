@@ -2,13 +2,13 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :get_votable, only: [:vote_up, :vote_down, :unvote]
+    before_action :get_votable, only: [:vote_up, :vote_down]
   end
 
   def vote_up
     if @votable.liked_by(current_user)
-      #render json: @votable
-      redirect_to question_path(@votable)
+      render 'vote'
+      #redirect_to question_path(@votable)
     else
       render :forbidden
     end
@@ -16,8 +16,8 @@ module Voted
 
   def vote_down
     if @votable.disliked_by(current_user)
-      #render json: @votable
-      redirect_to question_path(@votable)
+      render 'vote'
+      #redirect_to question_path(@votable)
     else
       render :forbidden
     end

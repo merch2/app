@@ -1,0 +1,7 @@
+div class='votes'
+  p
+    =link_to '+', vote_up_question_path(@question), remote: true
+    =@question.votes.where(like: 1).count
+  p
+    =link_to '-', vote_down_question_path(@question), remote: true
+    =@question.votes.where(like: -1).count
