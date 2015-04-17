@@ -20,4 +20,10 @@ module Votable
       votes.create(user_id: user.id, like: -1)
     end
   end
+
+  def unvoted_by(user)
+    if votes.where(user_id: user.id).exists?
+      votes.where(user_id: user.id).delete_all
+    end
+  end
 end

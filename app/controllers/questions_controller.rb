@@ -53,6 +53,7 @@ class QuestionsController < ApplicationController
   end
 
 
+
   private
 
   def load_question

@@ -1,7 +1,16 @@
 div class='votes'
-  p
-    =link_to '+', vote_up_question_path(question), remote: true
-    =question.votes.where(like: 1).count
-  p
-    =link_to '-', vote_down_question_path(question), remote: true
-    =question.votes.where(like: -1).count
+  - if current_user
+    - if question.votes.where(user_id: current_user.id).exists?
+      p
+        | Ваш голос:
+        =question.votes.where(user_id: current_user).first.like
+      p
+        =link_to 'unvote', unvote_question_path(question), remote: true
+    - else
+      p
+        =link_to '+', vote_up_question_path(question), remote: true if question.user_id != current_user.id
+        //=question.votes.where(like: 1).count
+      p
+        =link_to '-', vote_down_question_path(question), remote: true if  question.user_id != current_user.id
+        //=question.votes.where(like: -1).count
+

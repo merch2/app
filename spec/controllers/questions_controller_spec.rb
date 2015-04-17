@@ -102,4 +102,19 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'GET #vote_up' do
+    let!(:question) { create(:question) }
+    it 'save vote in db' do
+      expect { get :vote_up, votable_id: question.id, votable_type: "Question", like: 1, user_id: user.id }.to change(Vote, :count).by(1)
+    end
+  end
+
+  describe 'GET #vote_down' do
+
+  end
+
+  describe 'GET #unvote' do
+
+  end
+
 end
