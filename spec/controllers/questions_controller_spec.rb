@@ -103,18 +103,46 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #vote_up' do
-    let!(:question) { create(:question) }
+    before { sign_in(user) }
+    let(:question) { create(:question) }
     it 'save vote in db' do
-      expect { get :vote_up, votable_id: question.id, votable_type: "Question", like: 1, user_id: user.id }.to change(Vote, :count).by(1)
+      expect { post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
     end
+
+    it 'render votes page' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+
+
   end
 
   describe 'GET #vote_down' do
+    before { sign_in(user) }
+    let(:question) { create(:question) }
+    it 'save vote in db' do
+      expect { post :vote_down, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
+    end
 
+    it 'render votes page' do
+      post :vote_down, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
   end
 
   describe 'GET #unvote' do
+    before { sign_in(user) }
+    let(:question) { create(:question) }
+    it 'destroy vote from db' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      expect { post :unvote, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(-1)
+    end
 
+    it 'render votes page' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      post :unvote, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
   end
 
 end
