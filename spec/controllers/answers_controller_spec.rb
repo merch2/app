@@ -68,4 +68,40 @@ RSpec.describe AnswersController, type: :controller do
     end
 
   end
+
+  describe 'GET #vote_up' do
+    let(:answer) { create(:answer) }
+    it 'save vote in db' do
+      expect { post :vote_up, id: answer.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
+    end
+    it 'render vote' do
+      post :vote_up, id: answer.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'GET #vote_down' do
+    let(:answer) { create(:answer) }
+    it 'save vote in db' do
+      expect { post :vote_down, id: answer.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
+    end
+    it 'render vote' do
+      post :vote_down, id: answer.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'GET #unvote' do
+    let(:answer) { create(:answer) }
+    it 'destroy vote from db' do
+      post :vote_up, id: answer.id, vote: attributes_for(:vote), format: :js
+      expect { post :unvote, id: answer.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(-1)
+    end
+    it 'render votes page' do
+      post :vote_up, id: answer.id, vote: attributes_for(:vote), format: :js
+      post :unvote, id: answer.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+  end
+
 end

@@ -102,4 +102,47 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'GET #vote_up' do
+    before { sign_in(user) }
+    let(:question) { create(:question) }
+    it 'save vote in db' do
+      expect { post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
+    end
+
+    it 'render votes page' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+
+
+  end
+
+  describe 'GET #vote_down' do
+    before { sign_in(user) }
+    let(:question) { create(:question) }
+    it 'save vote in db' do
+      expect { post :vote_down, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(1)
+    end
+
+    it 'render votes page' do
+      post :vote_down, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+  end
+
+  describe 'GET #unvote' do
+    before { sign_in(user) }
+    let(:question) { create(:question) }
+    it 'destroy vote from db' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      expect { post :unvote, id: question.id, vote: attributes_for(:vote), format: :js }.to change(Vote, :count).by(-1)
+    end
+
+    it 'render votes page' do
+      post :vote_up, id: question.id, vote: attributes_for(:vote), format: :js
+      post :unvote, id: question.id, vote: attributes_for(:vote), format: :js
+      expect(response).to render_template :vote
+    end
+  end
+
 end

@@ -8,6 +8,9 @@ p Файлы:
 ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
+
+= render partial: 'votes', object: @question, as: 'question'
+
 p ---------------------
 .best
   = render 'best'
@@ -16,7 +19,7 @@ p ---------------------
   = render 'answers'
 p ---------------------
 p Добавить ответ:
-= nested_form_for [@question, @answer], remote: true do |f|
+= nested_form_for [@question, @answer], remote: true, data: { type: :json } do |f|
   p= f.label :body, 'Your answer'  unless current_user.nil?
   .answer-errors
   p= f.text_area :body unless current_user.nil?

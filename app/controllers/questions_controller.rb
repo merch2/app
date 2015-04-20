@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
 
+  include Voted
+
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
 
@@ -49,6 +51,8 @@ class QuestionsController < ApplicationController
       render :show
     end
   end
+
+
 
   private
 

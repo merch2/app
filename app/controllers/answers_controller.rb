@@ -1,18 +1,37 @@
 class AnswersController < ApplicationController
 
+  include Voted
+
   before_action :authenticate_user!, only: [:create, :destroy]
-  before_action :question_find
+  before_action :question_find,      only: [:create]
   before_action :answer_find,        except: [:create]
 
   def create
     @user = current_user
     @answer = @question.answers.new(answer_params)
     @answer.user = @user
-    @answer.save
+    respond_to do |format|
+      if @answer.save
+        format.html { render partial: 'questions/answers', layout: false }
+        format.json { render json: @answer }
+      else
+        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
-    @answer.update(answer_params)
+    respond_to do |format|
+      if @answer.update(answer_params)
+        #format.html { render partial: 'questions/answers', layout: false }
+        #format.json { render json: @answer }
+        render 'update'
+      else
+        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
@@ -28,6 +47,8 @@ class AnswersController < ApplicationController
       @answer.save
     end
   end
+
+
 
   private
 

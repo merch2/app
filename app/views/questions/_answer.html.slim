@@ -1,0 +1,44 @@
+div class="answer-#{answer.id}"
+  = answer.body
+  p Файлы:
+  ul class="files"
+    - answer.attachments.each do |a|
+      li= link_to a.file.identifier, a.file.url
+  |  --
+  = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
+  |  --
+  = link_to "Удалить", answer_path(answer), method: :delete, remote: true unless current_user.nil? or current_user.id != answer.user_id
+  |  --
+  = link_to "best", best_answer_path(answer), remote: true unless current_user.nil? or current_user.id != answer.user_id
+  |  --
+  - if current_user
+    - if answer.votes.where(user_id: current_user.id).exists?
+      p
+        | Ваш голос:
+        = answer.votes.find_by(user_id: current_user.id).like
+        p
+          =link_to 'unvote', unvote_answer_path(answer), remote: true
+    - else
+      p
+        = link_to "+", vote_up_answer_path(answer), remote: true if answer.user_id != current_user.id
+        = link_to "-", vote_down_answer_path(answer), remote: true if answer.user_id != current_user.id
+  p
+    | Суммарный рейтинг ответа:
+    =answer.votes.sum :like
+  p
+    = nested_form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"}, data: { type: :json } do |f|
+      = f.label :body, 'Answer'
+      = f.text_area :body
+      p
+        = f.fields_for :attachments do |a|
+          - attachment = a.object
+          - if attachment.new_record?
+            = a.label :file
+            = a.file_field :file
+            = a.link_to_remove "Remove this file"
+          - else
+            p
+              = attachment.file.file.filename
+              = link_to "Del file", attachment_path(attachment), method: :delete, remote: true
+        p= f.link_to_add "Add file", :attachments
+      = f.submit 'Save'
