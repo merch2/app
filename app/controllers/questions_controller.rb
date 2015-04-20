@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :load_question, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy, :vote_up, :vote_down, :unvote]
 
   def index
     @questions = Question.all
