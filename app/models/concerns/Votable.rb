@@ -22,8 +22,6 @@ module Votable
   end
 
   def unvoted_by(user)
-    if votes.where(user_id: user.id).exists?
-      votes.where(user_id: user.id).delete_all
-    end
+    votes.where(user_id: user.id).delete_all
   end
 end

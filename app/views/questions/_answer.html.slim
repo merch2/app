@@ -15,13 +15,16 @@ div class="answer-#{answer.id}"
     - if answer.votes.where(user_id: current_user.id).exists?
       p
         | Ваш голос:
-        = answer.votes.where(user_id: current_user).first.like
+        = answer.votes.find_by(user_id: current_user.id).like
         p
           =link_to 'unvote', unvote_answer_path(answer), remote: true
     - else
       p
         = link_to "+", vote_up_answer_path(answer), remote: true if answer.user_id != current_user.id
         = link_to "-", vote_down_answer_path(answer), remote: true if answer.user_id != current_user.id
+  p
+    | Суммарный рейтинг ответа:
+    =answer.votes.sum :like
   p
     = nested_form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"}, data: { type: :json } do |f|
       = f.label :body, 'Answer'

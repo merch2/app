@@ -47,4 +47,14 @@ feature 'Vote for answer' do
     end
   end
 
+  scenario 'Sum votes', js: true  do
+    sign_in(user)
+    create(:answer, question_id: question.id)
+    visit question_path(question)
+    within '.answers' do
+      click_on '+'
+      expect(page).to have_content 'Суммарный рейтинг ответа:1'
+    end
+  end
+
 end

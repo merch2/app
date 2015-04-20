@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
 
   include Voted
 
-  before_action :authenticate_user!, only: [:create, :destroy, :vote_up, :vote_down, :unvote]
+  before_action :authenticate_user!, only: [:create, :destroy]
   before_action :question_find,      only: [:create]
   before_action :answer_find,        except: [:create]
 

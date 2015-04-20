@@ -35,6 +35,14 @@ feature 'Vote for question' do
     expect(page).to_not have_link '+'
   end
 
+  scenario 'Sum votes', js: true  do
+    sign_in(user)
+    visit question_path(question)
+    click_on '+'
+
+    expect(page).to have_content 'Суммарный рейтинг вопроса:1'
+  end
+
 
 end
 

@@ -11,9 +11,6 @@ ul
 
 = render partial: 'votes', object: @question, as: 'question'
 
-p
-  | Всего голосов:
-  =@question.votes.count
 p ---------------------
 .best
   = render 'best'
