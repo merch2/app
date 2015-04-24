@@ -7,8 +7,10 @@ Rails.application.routes.draw do
       get :vote_down
       get :unvote
     end
+    resources :comments, defaults: { commentable: 'questions' }
     resources :attachments
     resources :answers do
+      resources :comments, defaults: { commentable: 'answers' }
       member do
         get :vote_up
         get :vote_down

@@ -9,6 +9,8 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   belongs_to :user
   has_many   :attachments, as: :attachmentable
-  #has_many   :votes,       as: :votable, dependent: :destroy
+  #has_many  :votes,       as: :votable, dependent: :destroy
+  has_many   :comments,   as: :commentable, dependent: :destroy
+
   accepts_nested_attributes_for :attachments
 end

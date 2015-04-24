@@ -3,7 +3,10 @@ p
   = link_to 'log out', destroy_user_session_path, method: :delete unless current_user.nil?
   = link_to 'log in', new_user_session_path if current_user.nil?
 h1 Questions
-- @questions.each do |q|
-  p = link_to q.title, question_path(q)
+.questions
+  - @questions.each do |q|
+    p = link_to q.title, question_path(q)
 
 = link_to "add question", new_question_path
+
+= subscribe_to "/questions"

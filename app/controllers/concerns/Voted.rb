@@ -3,7 +3,7 @@ module Voted
 
   included do
     before_action :get_votable, only: [:vote_up, :vote_down, :unvote]
-    before_action :authenticate_user!
+    before_action :authenticate_user!, only: [:vote_up, :vote_down, :unvote]
   end
 
   def vote_up

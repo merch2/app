@@ -42,3 +42,8 @@ div class="answer-#{answer.id}"
               = link_to "Del file", attachment_path(attachment), method: :delete, remote: true
         p= f.link_to_add "Add file", :attachments
       = f.submit 'Save'
+  p
+    | Комменты:
+    = form_for [answer, @comment] do |f|
+      = f.text_area :body
+      = f.submit

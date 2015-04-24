@@ -12,11 +12,9 @@ class AnswersController < ApplicationController
     @answer.user = @user
     respond_to do |format|
       if @answer.save
-        format.html { render partial: 'questions/answers', layout: false }
-        format.json { render json: @answer }
+        format.js
       else
-        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
-        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -35,6 +33,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    @question = @answer.question
     if @answer.user_id == current_user.id
       @answer.destroy!
     end

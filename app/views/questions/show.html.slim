@@ -8,6 +8,12 @@ p Файлы:
 ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
+p Комментарии:
+= render partial: 'comments', object: @comments, as: 'comments'
+- if current_user
+  = form_for [@question, @comment], remote: true do |f|
+    = f.text_area :body
+    = f.submit
 
 = render partial: 'votes', object: @question, as: 'question'
 
@@ -16,10 +22,10 @@ p ---------------------
   = render 'best'
 p ---------------------
 .answers
-  = render 'answers'
+  = render partial: 'answers', object: @question, as: 'question'
 p ---------------------
 p Добавить ответ:
-= nested_form_for [@question, @answer], remote: true, data: { type: :json } do |f|
+= nested_form_for [@question, @answer], remote: true do |f|
   p= f.label :body, 'Your answer'  unless current_user.nil?
   .answer-errors
   p= f.text_area :body unless current_user.nil?
@@ -37,4 +43,5 @@ p= link_to "Редактировать вопрос", edit_question_path unless 
 p= link_to "Удалить вопрос", question_path, method: :delete unless current_user.nil? or current_user.id != @question.user_id
 
 
-
+= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"

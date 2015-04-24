@@ -1,1 +1,3 @@
-$('.answers').html('<%= j render 'questions/answers' %>');
+<% publish_to "/questions/#{@question.id}/answers" do %>
+$('.answers').html('<%= j render partial: 'questions/answers', object: @answer.question , as: 'question' %>');
+<% end %>

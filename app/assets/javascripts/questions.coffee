@@ -17,3 +17,10 @@ $ ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
       $('.answer-errors').append(value)
+
+
+
+  PrivatePub.subscribe "/questions", (data, channel) ->
+    console.log(data)
+    question = $.parseJSON(data['question'])
+    $('.questions').append('<p><a href=\'questions/' + question.id + '\'>' + question.title + '</a></p>')
