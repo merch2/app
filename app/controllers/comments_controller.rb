@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
     @comment = @commentable.comments.new(comments_params)
     @comment.user = current_user
     @comment.save
-    #redirect_to question_path(@question)
   end
 
   private

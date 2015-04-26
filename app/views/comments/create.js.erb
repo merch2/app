@@ -1,3 +1,9 @@
-<% publish_to "/questions/#{@commentable.id}/comments" do %>
-    $('.question_comments').html('<%= j render partial: 'questions/comments', object: @comments , as: 'comments' %>');
+<% if @commentable.class == Question %>
+    <% publish_to "/questions/#{@commentable.id}/comments" do %>
+        $('.question_comments').html('<%= j render partial: 'questions/comments', object: @commentable , as: 'question' %>');
+    <% end %>
+<% else %>
+    <% publish_to "/answer/#{@commentable.id}" do %>
+        $('.answer-<%= @commentable.id %>').html('<%= j render partial: 'questions/answer', object: @commentable , as: 'answer' %>');
+    <% end %>
 <% end %>

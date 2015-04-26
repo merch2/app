@@ -9,7 +9,7 @@ ul
   - @question.attachments.each do |a|
     li= link_to a.file.file.filename, a.file.url
 p Комментарии:
-= render partial: 'comments', object: @comments, as: 'comments'
+= render partial: 'comments', object: @question, as: 'question'
 - if current_user
   = form_for [@question, @comment], remote: true do |f|
     = f.text_area :body

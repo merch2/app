@@ -44,6 +44,12 @@ div class="answer-#{answer.id}"
       = f.submit 'Save'
   p
     | Комменты:
-    = form_for [answer, @comment] do |f|
-      = f.text_area :body
-      = f.submit
+    - answer.comments.each do |comment|
+      p
+        =comment.body
+    - if current_user
+      = form_for [answer, Comment.new], remote: true do |f|
+        = f.text_area :body
+        = f.submit
+
+= subscribe_to "/answer/#{answer.id}"
