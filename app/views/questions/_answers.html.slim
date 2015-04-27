@@ -1,2 +1,2 @@
-- @question.answers.where(best: false).each do |answer|
-  = render partial: 'answer', object: answer, as: 'answer'
+- question.answers.where(best: false).each do |answer|
+  = render partial: 'questions/answer', object: answer, as: 'answer'

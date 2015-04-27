@@ -11,6 +11,8 @@ gem 'devise'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'nested_form'
+gem 'private_pub'
+gem 'thin'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-
   include Voted
 
   before_action :load_question, only: [:show, :edit, :update, :destroy]
@@ -13,6 +12,8 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @best   = @question.answers.where(best: true).last
     @answer.attachments.build
+    @comment = Comment.new
+    @comments = @question.comments
   end
 
   def new
@@ -24,6 +25,7 @@ class QuestionsController < ApplicationController
     @user = current_user
     @question = @user.questions.new(questions_params)
     if @question.save
+      PrivatePub.publish_to "/questions", question: @question.to_json
       redirect_to @question
     else
       render :new

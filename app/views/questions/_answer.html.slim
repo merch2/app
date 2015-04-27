@@ -42,3 +42,14 @@ div class="answer-#{answer.id}"
               = link_to "Del file", attachment_path(attachment), method: :delete, remote: true
         p= f.link_to_add "Add file", :attachments
       = f.submit 'Save'
+  p
+    | Комменты:
+    - answer.comments.each do |comment|
+      p
+        =comment.body
+    - if current_user
+      = form_for [answer, Comment.new], remote: true do |f|
+        = f.text_area :body
+        = f.submit
+
+= subscribe_to "/answer/#{answer.id}"
