@@ -3,55 +3,38 @@ class QuestionsController < ApplicationController
 
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :build_answer, only: :show
+  after_action  :publish, only: :create
+
+  respond_to :html
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = Answer.new
-    @best   = @question.answers.where(best: true).last
-    @answer.attachments.build
-    @comment = Comment.new
-    @comments = @question.comments
+    @best     = @question.answers.where(best: true).last
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
-  end
-
-  def create
-    @user = current_user
-    @question = @user.questions.new(questions_params)
-    if @question.save
-      PrivatePub.publish_to "/questions", question: @question.to_json
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = Question.new)
   end
 
   def edit
   end
 
+  def create
+    respond_with(@question = current_user.questions.create(questions_params))
+  end
+
   def update
-    if @question.update(questions_params)
-      redirect_to question_path(@question)
-    else
-      flash[:notice] = "Заполните все поля"
-      render :edit
-    end
+    @question.update(questions_params)
+    respond_with @question
   end
 
   def destroy
-    if @question.user_id == current_user.id
-      @question.destroy!
-      redirect_to root_path
-    else
-      flash[:notice] = "Вы не автор вопроса"
-      render :show
-    end
+    respond_with(@question.destroy)
   end
 
 
@@ -64,6 +47,14 @@ class QuestionsController < ApplicationController
 
   def questions_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file,:id, :_destroy])
+  end
+
+  def build_answer
+    @answer = Answer.new
+  end
+
+  def publish
+    PrivatePub.publish_to "/questions", question: @question.to_json
   end
 
 end
