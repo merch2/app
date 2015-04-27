@@ -43,5 +43,4 @@ p= link_to "Редактировать вопрос", edit_question_path unless 
 p= link_to "Удалить вопрос", question_path, method: :delete unless current_user.nil? or current_user.id != @question.user_id
 
 
-= subscribe_to "/questions/#{@question.id}/answers"
-= subscribe_to "/questions/#{@question.id}/comments"
+= subscribe_to "/questions/#{@question.id}"

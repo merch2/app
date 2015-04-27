@@ -13,7 +13,7 @@ class QuestionsController < ApplicationController
     @best   = @question.answers.where(best: true).last
     @answer.attachments.build
     @comment = Comment.new
-    @comments = Comment.all
+    @comments = @question.comments
   end
 
   def new
@@ -22,7 +22,6 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @questions = Question.all
     @user = current_user
     @question = @user.questions.new(questions_params)
     if @question.save
