@@ -9,7 +9,8 @@ class AnswersController < ApplicationController
   respond_to :html, :js, :json
 
   def create
-    @user = current_user
+    @answer = @question.answers.build(answer_params)
+    @answer.user = current_user
     respond_with(@answer = @question.answers.create(answer_params))
   end
 
