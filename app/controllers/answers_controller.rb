@@ -9,9 +9,7 @@ class AnswersController < ApplicationController
   respond_to :html, :js, :json
 
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    respond_with(@answer = @question.answers.create(answer_params))
+    respond_with @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def update
