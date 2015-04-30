@@ -6,37 +6,19 @@ class AnswersController < ApplicationController
   before_action :question_find,      only: [:create]
   before_action :answer_find,        except: [:create]
 
+  respond_to :html, :js, :json
+
   def create
-    @user = current_user
-    @answer = @question.answers.new(answer_params)
-    @answer.user = @user
-    respond_to do |format|
-      if @answer.save
-        format.js
-      else
-        format.js
-      end
-    end
+    respond_with @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def update
-    respond_to do |format|
-      if @answer.update(answer_params)
-        #format.html { render partial: 'questions/answers', layout: false }
-        #format.json { render json: @answer }
-        render 'update'
-      else
-        format.html { render text: @answer.errors.full_messages.join("\n"), status: :unprocessable_entity }
-        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
+    @answer.update(answer_params)
+    respond_with @answer
   end
 
   def destroy
-    @question = @answer.question
-    if @answer.user_id == current_user.id
-      @answer.destroy!
-    end
+    respond_with @answer.destroy
   end
 
   def best

@@ -12,6 +12,10 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(question.answers, :count).by(1)
       end
 
+      it 'associated with user' do
+        expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(user.answers, :count).by(1)
+      end
+
       it 'rerender create tmpl' do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :create

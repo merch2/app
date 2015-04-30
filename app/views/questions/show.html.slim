@@ -11,7 +11,7 @@ ul
 p Комментарии:
 = render partial: 'comments', object: @question, as: 'question'
 - if current_user
-  = form_for [@question, @comment], remote: true do |f|
+  = form_for [@question, Comment.new], remote: true do |f|
     = f.text_area :body
     = f.submit
 
@@ -30,7 +30,7 @@ p Добавить ответ:
   .answer-errors
   p= f.text_area :body unless current_user.nil?
   p
-    = f.fields_for :attachments do |a|
+    = f.fields_for :attachments, @answer.attachments.build do |a|
       = a.label      :file
       = a.file_field :file
     = f.link_to_add "Add more", :attachments

@@ -5,7 +5,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    let!(:questions) { create_list(:question, 2) }
     before { get :index }
 
     it 'array = all questions' do
@@ -61,6 +61,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'save question in db' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
+
+      it 'associated with user' do
+        expect { post :create, question: attributes_for(:question) }.to change(user.questions, :count).by(1)
+      end
+
 
       it 'redirect to show page' do
         post :create, question: attributes_for(:question)
