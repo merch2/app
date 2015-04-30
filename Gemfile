@@ -14,6 +14,9 @@ gem 'nested_form'
 gem 'private_pub'
 gem 'thin'
 gem 'responders', '~> 2.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
