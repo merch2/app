@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :vkontakte]
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook, :twitter]
 
   has_many :questions
   has_many :answers
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
     return autorization.user if autorization
 
     if auth.info[:email].blank?
-      email = "#{(0...15).map { ('a'..'z').to_a[rand(26)] }.join}@mail.ru"
+      email = "type@your.email"
     else
       email = auth.info[:email]
     end
