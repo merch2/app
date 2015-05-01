@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
     return autorization.user if autorization
 
     if auth.info[:email].blank?
-      email = "type@your.email"
+      return @user = User.new()
     else
       email = auth.info[:email]
     end

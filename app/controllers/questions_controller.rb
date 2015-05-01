@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
   before_action :build_answer, only: :show
-  before_action :check_new_email
   after_action  :publish, only: :create
 
   respond_to :html
@@ -40,15 +39,6 @@ class QuestionsController < ApplicationController
 
 
   private
-
-  def check_new_email
-    if current_user
-      @user = current_user
-      if current_user.email == "type@your.email"
-        redirect_to edit_user_registration_path
-      end
-    end
-  end
 
   def load_question
     @question = Question.find(params[:id])
