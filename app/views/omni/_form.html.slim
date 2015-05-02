@@ -1,3 +1,6 @@
-=form_for @user do |f|
-  =f.text_field :email
-  =f.submit
+= form_tag complete_auth_path, method: :post do
+  = label_tag "Email"
+  = email_field(:auth,      :email)
+  = hidden_field_tag(:auth, :provider, value: auth.provider)
+  = hidden_field_tag(:auth, :uid,      value: auth.uid)
+  = submit_tag "Save"
