@@ -1,18 +1,10 @@
 module OmniauthMacros
 
-  def mock_auth_hash(provider)
-    OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new({
-        'provider' => provider,
-        'uid' => '123545',
-        'user_info' => {
-            'name' => 'mockuser',
-            'image' => 'mock_user_thumbnail_url'
-        },
-        'credentials' => {
-            'token' => 'mock_token',
-            'secret' => 'mock_secret'
-        }
-    })
+  def mock_auth_hash(provider, has_email = true)
+    auth_data = { 'provider' => provider, 'uid' => '123456789' }
+    auth_data['info'] = { 'email' => has_email } if has_email
+
+    OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new(auth_data)
   end
-  
+
 end

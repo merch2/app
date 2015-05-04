@@ -2,6 +2,16 @@ require_relative 'acceptance_helper'
 
 feature 'Omniauth' do
 
+  scenario 'sign in with facebook' do
+    OmniAuth.config.test_mode = true
+    visit root_path
+    click_on 'log in'
+    click_on 'Sign in with Facebook'
+    mock_auth_hash(:facebook, '123@123.com')
+
+    expect(page).to have_content 'Successfully authenticated from Facebook account'
+  end
+
   scenario 'sign in with twitter' do
     OmniAuth.config.test_mode = true
     visit root_path
@@ -15,15 +25,6 @@ feature 'Omniauth' do
     expect(page).to have_content 'Successfully authenticated from Twitter account'
   end
 
-  scenario 'sign in with facebook' do
-    OmniAuth.config.test_mode = true
-    visit 'http://localhost:3000'
-    click_on 'log in'
-    click_on 'Sign in with Facebook'
-    save_and_open_page
-    mock_auth_hash(:facebook)
 
-    expect(page).to have_content 'Successfully authenticated from Facebook account'
-  end
 
 end
