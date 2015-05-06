@@ -24,8 +24,13 @@ class User < ActiveRecord::Base
       user.authorizations.create(provider: auth.provider, uid: auth.uid)
     else
       password = Devise.friendly_token[0, 8]
-      user = User.create!(email: email, password: password, password_confirmation: password)
-      user.authorizations.create(provider: auth.provider, uid: auth.uid)
+      user = User.new(email: email, password: password, password_confirmation: password)
+      if user.valid?
+        user.save
+        user.authorizations.create(provider: auth.provider, uid: auth.uid)
+      end
+      #user = User.create!(email: email, password: password, password_confirmation: password)
+      #user.authorizations.create(provider: auth.provider, uid: auth.uid)
     end
     user
   end
