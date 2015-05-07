@@ -44,6 +44,7 @@ describe Ability do
 
       it { should     be_able_to :unvote, create(:question, user: other),  user: user }
       it { should_not be_able_to :unvote, create(:question, user: user),  user: user }
+
     end
 
     context 'for answer' do
@@ -66,6 +67,13 @@ describe Ability do
     end
 
     context 'for comment' do
+      it { should     be_able_to :create, Comment }
+
+      it { should     be_able_to :update, create(:comment, user: user), user: user }
+      it { should_not be_able_to :update, create(:comment, user: other), user: user }
+
+      it { should     be_able_to :destroy, create(:comment, user: user), user: user }
+      it { should_not be_able_to :destroy, create(:comment, user: other), user: user }
     end
 
 

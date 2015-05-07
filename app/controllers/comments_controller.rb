@@ -1,14 +1,29 @@
 class CommentsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :load_commentable
+  before_action :load_commentable, except: [:edit, :update, :destroy]
 
-  respond_to :js
+  respond_to :js, :html
 
   authorize_resource
 
   def create
     respond_with @comment = @commentable.comments.create(comments_params.merge(user: current_user))
+  end
+
+  def edit
+    @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
+    @comment.update(comments_params)
+    redirect_to question_path(@comment.commentable)
+  end
+
+  def destroy
+    @comment = Comment.find(params[:id])
+    @comment.destroy
   end
 
   private
