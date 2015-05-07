@@ -35,6 +35,14 @@ describe Ability do
 
       it { should     be_able_to :destroy, create(:question, user: user),  user: user }
       it { should_not be_able_to :destroy, create(:question, user: other), user: user }
+
+      it { should_not be_able_to :vote_up, create(:question, user: user), user: user }
+      it { should     be_able_to :vote_up, create(:question, user: other),  user: user }
+
+      it { should_not be_able_to :vote_down, create(:question, user: user), user: user }
+      it { should     be_able_to :vote_down, create(:question, user: other),  user: user }
+
+      it { should     be_able_to :unvote, create(:question, user: other),  user: user }
     end
 
     context 'for answer' do
@@ -45,15 +53,18 @@ describe Ability do
 
       it { should     be_able_to :destroy, create(:answer, user: user),  user: user }
       it { should_not be_able_to :destroy, create(:answer, user: other), user: user }
+
+      it { should_not be_able_to :vote_up, create(:answer, user: user), user: user }
+      it { should     be_able_to :vote_up, create(:answer, user: other), user: user }
+
+      it { should_not be_able_to :vote_down, create(:answer, user: user), user: user }
+      it { should     be_able_to :vote_down, create(:answer, user: other), user: user }
     end
 
     context 'for comment' do
-      it { should     be_able_to :create, Comment }
     end
 
-    context 'for vote' do
-      it { should     be_able_to :create, Vote }
-    end
+
 
 
 

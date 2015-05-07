@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @best     = @question.answers.where(best: true).last
+    @best = @question.answers.where(best: true).last
     respond_with @question
   end
 
