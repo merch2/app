@@ -5,11 +5,11 @@ div class="answer-#{answer.id}"
     - answer.attachments.each do |a|
       li= link_to a.file.identifier, a.file.url
   |  --
-  = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } if can?(:edit, answer)
   |  --
-  = link_to "Удалить", answer_path(answer), method: :delete, remote: true unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "Удалить", answer_path(answer), method: :delete, remote: true if can?(:destroy, answer)
   |  --
-  = link_to "best", best_answer_path(answer), remote: true unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "best", best_answer_path(answer), remote: true if current_user and current_user.id == answer.question.user_id
   |  --
   - if current_user
     - if answer.votes.where(user_id: current_user.id).exists?
@@ -47,7 +47,7 @@ div class="answer-#{answer.id}"
     - answer.comments.each do |comment|
       p
         =comment.body
-    - if current_user
+    - if can?(:create, Comment)
       = form_for [answer, Comment.new], remote: true do |f|
         = f.text_area :body
         = f.submit

@@ -1,5 +1,5 @@
 div class='votes'
-  - if current_user
+  - if can?(:create, Vote)
     - if question.votes.where(user_id: current_user.id).exists?
       p
         | Ваш голос:
@@ -9,10 +9,8 @@ div class='votes'
     - else
       p
         =link_to '+', vote_up_question_path(question), remote: true if question.user_id != current_user.id
-        //=question.votes.where(like: 1).count
       p
         =link_to '-', vote_down_question_path(question), remote: true if  question.user_id != current_user.id
-        //=question.votes.where(like: -1).count
       p
   | Суммарный рейтинг вопроса:
   =question.votes.sum :like

@@ -17,6 +17,7 @@ gem 'responders', '~> 2.0'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+gem 'cancancan'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

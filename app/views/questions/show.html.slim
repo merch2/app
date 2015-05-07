@@ -10,7 +10,7 @@ ul
     li= link_to a.file.file.filename, a.file.url
 p Комментарии:
 = render partial: 'comments', object: @question, as: 'question'
-- if current_user
+- if can?(:create, Comment)
   = form_for [@question, Comment.new], remote: true do |f|
     = f.text_area :body
     = f.submit
@@ -24,23 +24,23 @@ p ---------------------
 .answers
   = render partial: 'answers', object: @question, as: 'question'
 p ---------------------
-p Добавить ответ:
-= nested_form_for [@question, @answer], remote: true do |f|
-  p= f.label :body, 'Your answer'  unless current_user.nil?
-  .answer-errors
-  p= f.text_area :body unless current_user.nil?
-  p
-    = f.fields_for :attachments, @answer.attachments.build do |a|
-      = a.label      :file
-      = a.file_field :file
-    = f.link_to_add "Add more", :attachments
-  p= f.submit 'Create Answer' unless current_user.nil?
-  p= link_to 'Login', new_user_session_path if current_user.nil?
+- if can?(:create, Answer)
+  p Добавить ответ:
+  = nested_form_for [@question, @answer], remote: true do |f|
+    p= f.label :body, 'Your answer'
+    .answer-errors
+    p= f.text_area :body
+    p
+      = f.fields_for :attachments, @answer.attachments.build do |a|
+        = a.label      :file
+        = a.file_field :file
+      = f.link_to_add "Add more", :attachments
+    p= f.submit 'Create Answer'
 
 p ---------------------
 
-p= link_to "Редактировать вопрос", edit_question_path unless current_user.nil? or current_user.id != @question.user_id
-p= link_to "Удалить вопрос", question_path, method: :delete unless current_user.nil? or current_user.id != @question.user_id
+p= link_to "Редактировать вопрос", edit_question_path if can?(:edit, Question)
+p= link_to "Удалить вопрос", question_path, method: :delete if can?(:destroy, Question)
 
 
 = subscribe_to "/questions/#{@question.id}"
