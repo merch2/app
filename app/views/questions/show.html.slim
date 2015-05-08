@@ -39,8 +39,8 @@ p ---------------------
 
 p ---------------------
 
-p= link_to "Редактировать вопрос", edit_question_path if can?(:edit, Question)
-p= link_to "Удалить вопрос", question_path, method: :delete if can?(:destroy, Question)
+p= link_to "Редактировать вопрос", edit_question_path if can?(:edit, @question)
+p= link_to "Удалить вопрос", question_path, method: :delete if can?(:destroy, @question)
 
 
 = subscribe_to "/questions/#{@question.id}"

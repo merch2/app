@@ -11,7 +11,7 @@ div class="answer-#{answer.id}"
   |  --
   = link_to "best", best_answer_path(answer), remote: true if can?(:best, answer)
   |  --
-  - if current_user
+  - if can?(:create, Vote)
     - if answer.votes.where(user_id: current_user.id).exists?
       p
         | Ваш голос:

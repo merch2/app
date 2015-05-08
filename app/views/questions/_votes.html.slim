@@ -8,9 +8,9 @@ div class='votes'
         =link_to 'unvote', unvote_question_path(question), remote: true
     - else
       p
-        =link_to '+', vote_up_question_path(question), remote: true if question.user_id != current_user.id
+        =link_to '+', vote_up_question_path(question), remote: true if can?(:vote_up, question)
       p
-        =link_to '-', vote_down_question_path(question), remote: true if  question.user_id != current_user.id
+        =link_to '-', vote_down_question_path(question), remote: true if  can?(:vote_down, question)
       p
   | Суммарный рейтинг вопроса:
   =question.votes.sum :like

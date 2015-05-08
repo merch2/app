@@ -2,6 +2,6 @@
   - question.comments.each do |comment|
     p
       = comment.body
-      - if can?(:edit, comment)
-        = link_to 'edit', edit_comment_path(comment)
-        = link_to 'del', comment_path(comment), method: :delete, remote: true
+    p
+      = link_to 'edit', edit_comment_path(comment) if can?(:edit, comment)
+      = link_to 'del', comment_path(comment), method: :delete, remote: true if can?(:destroy, comment)
