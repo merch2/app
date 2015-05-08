@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :load_commentable, except: [:edit, :update, :destroy]
+  before_action :load_comment, only: [:edit, :update, :destroy]
 
   respond_to :js, :html
 
@@ -12,17 +13,14 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    @comment = Comment.find(params[:id])
   end
 
   def update
-    @comment = Comment.find(params[:id])
     @comment.update(comments_params)
     redirect_to question_path(@comment.commentable)
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
     @comment.destroy
   end
 
@@ -34,6 +32,10 @@ class CommentsController < ApplicationController
   def load_commentable
     parameter = (params[:commentable].singularize + '_id').to_sym
     @commentable = params[:commentable].classify.constantize.find(params[parameter])
+  end
+
+  def load_comment
+    @comment = Comment.find(params[:id])
   end
 
 end

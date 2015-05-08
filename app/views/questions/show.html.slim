@@ -19,7 +19,7 @@ p Комментарии:
 
 p ---------------------
 .best
-  = render 'best'
+  = render partial: 'best', object: @question, as: 'question'
 p ---------------------
 .answers
   = render partial: 'answers', object: @question, as: 'question'

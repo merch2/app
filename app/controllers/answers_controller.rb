@@ -25,7 +25,7 @@ class AnswersController < ApplicationController
 
   def best
     Answer.transaction do
-      @question.answers.update_all(best: false)
+      @answer.question.answers.update_all(best: false)
       @answer.best = true
       @answer.save
     end

@@ -9,7 +9,7 @@ div class="answer-#{answer.id}"
   |  --
   = link_to "Удалить", answer_path(answer), method: :delete, remote: true if can?(:destroy, answer)
   |  --
-  = link_to "best", best_answer_path(answer), remote: true if current_user and current_user.id == answer.question.user_id
+  = link_to "best", best_answer_path(answer), remote: true if can?(:best, answer)
   |  --
   - if current_user
     - if answer.votes.where(user_id: current_user.id).exists?
@@ -20,8 +20,8 @@ div class="answer-#{answer.id}"
           =link_to 'unvote', unvote_answer_path(answer), remote: true
     - else
       p
-        = link_to "+", vote_up_answer_path(answer), remote: true if answer.user_id != current_user.id
-        = link_to "-", vote_down_answer_path(answer), remote: true if answer.user_id != current_user.id
+        = link_to "+", vote_up_answer_path(answer), remote: true if can?(:vote_up, answer)
+        = link_to "-", vote_down_answer_path(answer), remote: true if can?(:vote_down, answer)
   p
     | Суммарный рейтинг ответа:
     =answer.votes.sum :like
