@@ -21,7 +21,7 @@ class Ability
   def admin_abilities
     can :manage, :all
   end
-#object.votes.where(user_id: user.id).exists?
+  
   def user_abilities
     guest_abilities
     can     :create,     [Question, Answer, Comment]
