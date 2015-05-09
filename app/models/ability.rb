@@ -21,7 +21,7 @@ class Ability
   def admin_abilities
     can :manage, :all
   end
-
+#object.votes.where(user_id: user.id).exists?
   def user_abilities
     guest_abilities
     can     :create,     [Question, Answer, Comment]
@@ -32,10 +32,16 @@ class Ability
     can     :best, Answer
     cannot  :best, Answer, user_id: user.id
 
-    can     :vote_up,    [Question, Answer]
+    can     :vote_up,    [Question, Answer] do |object|
+      object.votes.where(user_id: user.id).exists? == false
+    end
     cannot  :vote_up,    [Question, Answer], user_id: user.id
-    can     :vote_down,    [Question, Answer]
+
+    can     :vote_down,    [Question, Answer] do |object|
+      object.votes.where(user_id: user.id).exists? == false
+    end
     cannot  :vote_down,    [Question, Answer], user_id: user.id
+
     can     :unvote,       [Question, Answer]
     cannot  :unvote,       [Question, Answer], user_id: user.id
   end
