@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do post "/complete_auth" => "omniauth_callbacks#complete_auth" end
   root 'questions#index'
@@ -20,6 +21,15 @@ Rails.application.routes.draw do
       resources :attachments
       member do
         get :best
+      end
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+        get :all, on: :collection
       end
     end
   end
