@@ -5,23 +5,22 @@ div class="answer-#{answer.id}"
     - answer.attachments.each do |a|
       li= link_to a.file.identifier, a.file.url
   |  --
-  = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "Редактировать", "", class: "edit-answer-link", data: { answer_id: answer.id } if can?(:edit, answer)
   |  --
-  = link_to "Удалить", answer_path(answer), method: :delete, remote: true unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "Удалить", answer_path(answer), method: :delete, remote: true if can?(:destroy, answer)
   |  --
-  = link_to "best", best_answer_path(answer), remote: true unless current_user.nil? or current_user.id != answer.user_id
+  = link_to "best", best_answer_path(answer), remote: true if can?(:best, answer)
   |  --
-  - if current_user
-    - if answer.votes.where(user_id: current_user.id).exists?
-      p
-        | Ваш голос:
-        = answer.votes.find_by(user_id: current_user.id).like
-        p
-          =link_to 'unvote', unvote_answer_path(answer), remote: true
-    - else
-      p
-        = link_to "+", vote_up_answer_path(answer), remote: true if answer.user_id != current_user.id
-        = link_to "-", vote_down_answer_path(answer), remote: true if answer.user_id != current_user.id
+  - if can?(:vote_up, answer)
+    p
+      = link_to "+", vote_up_answer_path(answer), remote: true
+      = link_to "-", vote_down_answer_path(answer), remote: true
+  - else
+    p
+      | Ваш голос:
+      = answer.votes.find_by(user_id: current_user.id).like if answer.votes.find_by(user_id: current_user.id)
+      p =link_to 'unvote', unvote_answer_path(answer), remote: true if can?(:unvote, answer)
+
   p
     | Суммарный рейтинг ответа:
     =answer.votes.sum :like
@@ -47,7 +46,7 @@ div class="answer-#{answer.id}"
     - answer.comments.each do |comment|
       p
         =comment.body
-    - if current_user
+    - if can?(:create, Comment)
       = form_for [answer, Comment.new], remote: true do |f|
         = f.text_area :body
         = f.submit

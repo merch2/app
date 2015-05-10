@@ -1,0 +1,3 @@
+<% publish_to "/questions/#{@comment.commentable.id}" do %>
+    $('.question_comments').html('<%= j render partial: 'questions/comments', object: @comment.commentable , as: 'question' %>');
+<% end %>

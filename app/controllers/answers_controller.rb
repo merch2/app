@@ -8,6 +8,8 @@ class AnswersController < ApplicationController
 
   respond_to :html, :js, :json
 
+  authorize_resource
+
   def create
     respond_with @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
@@ -23,7 +25,7 @@ class AnswersController < ApplicationController
 
   def best
     Answer.transaction do
-      @question.answers.update_all(best: false)
+      @answer.question.answers.update_all(best: false)
       @answer.best = true
       @answer.save
     end

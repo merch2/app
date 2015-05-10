@@ -8,12 +8,14 @@ class QuestionsController < ApplicationController
 
   respond_to :html
 
+  authorize_resource
+
   def index
     respond_with(@questions = Question.all)
   end
 
   def show
-    @best     = @question.answers.where(best: true).last
+    @best = @question.answers.where(best: true).last
     respond_with @question
   end
 
