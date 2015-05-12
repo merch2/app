@@ -10,7 +10,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def create
-    respond_with @answer = current_resource_owner.questions.answers.create(answer_params)
+    @answer = Answer.new(answer_params)
+    @answer.user = current_resource_owner
+    @answer.save
+    respond_with @answer
   end
 
   private

@@ -103,8 +103,9 @@ describe 'Answers API' do
     end
 
     context 'authorized' do
+
       it 'return status 201' do
-        post "/api/v1/questions/#{question.id}/answers", access_token: access_token.token, answer: attributes_for(:answer), format: :json
+        post "/api/v1/questions/#{question.id}/answers", access_token: access_token.token, answer: attributes_for(:answer), question: question, format: :json
         expect(response.status).to eq 201
       end
 
