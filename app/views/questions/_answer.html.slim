@@ -11,15 +11,15 @@ div class="answer-#{answer.id}"
   |  --
   = link_to "best", best_answer_path(answer), remote: true if can?(:best, answer)
   |  --
-  - if can?(:vote_up, answer)
+  - if can?(:vote, answer)
     p
       = link_to "+", vote_up_answer_path(answer), remote: true
       = link_to "-", vote_down_answer_path(answer), remote: true
-  - else
+  - if can?(:unvote, answer)
     p
       | Ваш голос:
-      = answer.votes.find_by(user_id: current_user.id).like if answer.votes.find_by(user_id: current_user.id)
-      p =link_to 'unvote', unvote_answer_path(answer), remote: true if can?(:unvote, answer)
+      = answer.votes.find_by(user_id: current_user.id).like
+      p =link_to 'unvote', unvote_answer_path(answer), remote: true
 
   p
     | Суммарный рейтинг ответа:

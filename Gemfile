@@ -18,6 +18,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan'
+gem 'doorkeeper'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -60,5 +61,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'launchy'
+  gem 'json_spec'
 end
 
