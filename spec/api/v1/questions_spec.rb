@@ -95,7 +95,7 @@ describe 'Questions API' do
       end
 
       it 'url attachments' do
-        expect(response.body).to be_json_eql(attachment.file.to_json).at_path("question/attachments/1/file")
+        expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("question/attachments/1/url")
       end
 
 
