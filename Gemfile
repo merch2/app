@@ -19,6 +19,9 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan'
 gem 'doorkeeper'
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

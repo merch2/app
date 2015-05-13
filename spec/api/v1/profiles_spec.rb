@@ -65,7 +65,7 @@ describe 'Profile API' do
       end
 
       it 'contains users list' do
-        expect(response.body).to be_json_eql(users.to_json)
+        expect(response.body).to have_json_size(10).at_path("all/users")
       end
 
       it 'does not contains me' do

@@ -2,14 +2,14 @@ FactoryGirl.define do
   factory :question do
     title "MyString"
     body "MyText"
-    trait :with_files
-    transient do
-      number_of_files 1
-    end
+    #trait :with_files
+    #transient do
+    #  number_of_files 1
+    #end
 
-    after(:create) do |question, evaluator|
-      create_list(:attachment, evaluator.number_of_files, attachmentable: question)
-    end
+    #after(:create) do |question, evaluator|
+    #  create_list(:attachment, evaluator.number_of_files, attachmentable: question)
+    #end
 
   end
 
