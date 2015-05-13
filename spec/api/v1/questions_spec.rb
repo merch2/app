@@ -36,9 +36,6 @@ describe 'Questions API' do
         end
       end
 
-      it 'question object contains short_title' do
-        expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path("questions/0/short_title")
-      end
 
       context 'Answers' do
         it 'included in question object' do
@@ -61,6 +58,7 @@ describe 'Questions API' do
     let(:question) { create(:question) }
     let!(:comments) { create_list(:comment, 2, commentable: question) }
     let!(:attachments) { create_list(:attachment, 2, attachmentable: question) }
+    let(:attachment) { attachments.first }
 
     context 'unauthorized' do
       it 'returns 401 status if no access_token' do
@@ -93,7 +91,11 @@ describe 'Questions API' do
       end
 
       it 'question with attachments' do
-        expect(response.body).to have_json_size(3).at_path("question/attachments")
+        expect(response.body).to have_json_size(2).at_path("question/attachments")
+      end
+
+      it 'url attachments' do
+        expect(response.body).to be_json_eql(attachment.file.to_json).at_path("question/attachments/1/file")
       end
 
 

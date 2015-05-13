@@ -47,6 +47,7 @@ describe 'Answers API' do
     let(:answer)       { create(:answer, question: question) }
     let!(:comments)    { create_list(:comment, 2, commentable: answer) }
     let!(:attachments) { create_list(:attachment, 2, attachmentable: answer) }
+    let(:attachment)   { attachments.first }
 
     context 'unauthorized' do
       it 'returns 401 status if no access_token' do
@@ -79,7 +80,11 @@ describe 'Answers API' do
       end
 
       it 'answer with attachments' do
-        expect(response.body).to have_json_size(3).at_path("answer/attachments")
+        expect(response.body).to have_json_size(2).at_path("answer/attachments")
+      end
+
+      it 'url attachments' do
+        expect(response.body).to be_json_eql(attachment.file.to_json).at_path("answer/attachments/1/file")
       end
 
 
