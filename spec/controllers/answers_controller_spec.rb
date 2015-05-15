@@ -20,6 +20,12 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :create
       end
+
+      it 'Publish_to' do
+        expect(PrivatePub).to receive(:publish_to)
+
+        post :create, answer: attributes_for(:answer), question_id: question, format: :js
+      end
     end
 
     context 'invalid attributes' do

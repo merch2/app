@@ -27,7 +27,17 @@ RSpec.describe CommentsController, type: :controller do
       it 'associated with user' do
         expect { post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :js }.to change(user.comments, :count).by(1)
       end
+
+      it 'Publish_to' do
+        expect(PrivatePub).to receive(:publish_to)
+
+        post :create, commentable: 'answers', answer_id: answer, comment: attributes_for(:comment), format: :js
+      end
+
     end
+
+
+
   end
 
   describe 'DELETE #destroy' do
