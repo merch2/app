@@ -8,6 +8,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     context 'valid attributes' do
+
       it 'save new answer in db' do
         expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(question.answers, :count).by(1)
       end
@@ -20,7 +21,10 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :create
       end
+    end
 
+    context 'Publish_to' do
+      render_views
       it 'Publish_to' do
         expect(PrivatePub).to receive(:publish_to)
 
