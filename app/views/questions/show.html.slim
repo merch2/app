@@ -39,7 +39,7 @@ p ---------------------
 
 p ---------------------
 
-- if can?(:create, Notice)
+- if can?(:create, @notice)
   p = link_to "Подписаться", question_notices_path(@question.id), method: :post
 - if can?(:destroy, @notice)
   p = link_to "Отписаться", notice_path(Notice.where(user: current_user, question_id: @question.id).first), method: :delete

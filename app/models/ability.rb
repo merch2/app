@@ -24,9 +24,12 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can     :create,     [Question, Answer, Comment, Notice]
+    can     :create,     [Question, Answer, Comment]
     can     :update,     [Question, Answer], user: user
     can     :destroy,    [Question, Answer, Notice], user: user
+    can     :create, Notice do |object|
+      object.new_record?
+    end
 
     can    [:update, :destroy], Comment, user_id: user.id
     can     :best, Answer
