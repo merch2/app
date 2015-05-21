@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :authorizations
 
-  has_many :notices
+  has_many :notices, dependent: :destroy
 
   def self.find_for_oauth(auth)
     autorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first

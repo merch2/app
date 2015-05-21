@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :destroy]
   before_action :build_answer, only: :show
-  #after_action  :publish, only: :create
+  after_action  :publish, only: :create
 
   respond_to :html
 
@@ -54,8 +54,8 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
   end
 
-  #def publish
-  #  PrivatePub.publish_to "/questions", question: @question.to_json
-  #end
+  def publish
+    PrivatePub.publish_to "/questions", question: @question.to_json
+  end
 
 end

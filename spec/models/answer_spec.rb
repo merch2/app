@@ -6,5 +6,6 @@ RSpec.describe Answer, type: :model do
   it { should validate_length_of(:body).is_at_least(3) }
   it { should belong_to :question }
 
+
   it_behaves_like 'Attachable'
 end
