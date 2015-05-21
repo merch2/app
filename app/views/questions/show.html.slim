@@ -40,9 +40,9 @@ p ---------------------
 p ---------------------
 
 - if can?(:create, Notice)
-  p = link_to "Подписаться", question_notices_path(@question.id), method: :post
+  p = link_to "Подписаться", question_notices_path(@question.id), method: :post unless Notice.where(user: current_user, question_id: @question.id).exists?
 - if can?(:destroy, Notice)
-  p = link_to "Отписаться", '???'
+  p = link_to "Отписаться", notice_path(Notice.where(user: current_user, question_id: @question.id).first), method: :delete if Notice.where(user: current_user, question_id: @question.id).exists?
 p= link_to "Редактировать вопрос", edit_question_path if can?(:edit, @question)
 p= link_to "Удалить вопрос", question_path, method: :delete if can?(:destroy, @question)
 
