@@ -26,7 +26,6 @@ gem 'oj_mimic_json'
 gem 'whenever'
 gem 'sidekiq'
 gem 'sinatra', '>=1.3.0', require: nil
-gem 'sidetiq'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
