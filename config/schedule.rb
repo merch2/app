@@ -14,7 +14,8 @@
 # end
 #
 every 1.day do
-  runner "User.send_daily_email"
+  runner "DailyMailer.perform_later"
 end
+
 
 # Learn more: http://github.com/javan/whenever
