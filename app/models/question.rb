@@ -10,7 +10,7 @@ class Question < ActiveRecord::Base
   has_many  :votes,       as: :votable, dependent: :destroy
   has_many  :comments, as: :commentable, dependent: :destroy
 
-  has_many :notices, dependent: :destroy
+  has_many :notices, dependent: :delete_all
 
   accepts_nested_attributes_for :attachments, reject_if: proc { |attrib| attrib['file'].nil? }
 

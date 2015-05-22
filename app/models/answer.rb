@@ -19,12 +19,10 @@ class Answer < ActiveRecord::Base
 
   private
   def send_to_question_owner
-    OwnerMailer.delay.send_owner(self)
+    OwnerMailer.send_owner(self).deliver_later
   end
 
   def send_notices
-    answer.question.notices do |notice|
-      NoticeMailer.delay.send_notices(self)
-    end
+    NoticeMailerJob.perform_later(self)
   end
 end
