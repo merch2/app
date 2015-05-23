@@ -3,6 +3,10 @@ p
   = link_to 'log out', destroy_user_session_path, method: :delete unless current_user.nil?
   = link_to 'log in', new_user_session_path if current_user.nil?
 h1 Questions
+= form_tag search_path, method: :get
+  p = text_field_tag :q
+  p = select_tag(:condition, options_for_select(['all', 'questions', 'answers', 'comments', 'users']))
+  p = submit_tag 'search'
 .questions
   - @questions.each do |q|
     p = link_to q.title, question_path(q)

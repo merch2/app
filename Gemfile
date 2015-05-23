@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use mysql as the database for Active Record
-gem 'mysql2'
 gem 'pg'
 gem 'slim-rails'
 gem 'devise'
@@ -22,9 +21,10 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
-#gem 'delayed_job_active_record'
 gem 'whenever'
 gem 'sidekiq'
+gem 'sinatra', '>=1.3.0', require: nil
+gem 'mysql2'
 gem 'thinking-sphinx'
 
 # Use SCSS for stylesheets
