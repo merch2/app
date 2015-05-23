@@ -66,11 +66,17 @@ RSpec.describe QuestionsController, type: :controller do
         expect { post :create, question: attributes_for(:question) }.to change(user.questions, :count).by(1)
       end
 
-
       it 'redirect to show page' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
+      it 'Publish_to' do
+        expect(PrivatePub).to receive(:publish_to)
+
+        post :create, question: attributes_for(:question)
+      end
+
     end
 
     context 'invalid attributes' do
