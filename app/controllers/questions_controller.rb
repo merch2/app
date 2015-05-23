@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
 
   def show
     @best = @question.answers.where(best: true).last
+    @notice = @question.notices.find_by(user: current_user) || Notice.new
     respond_with @question
   end
 

@@ -1,4 +1,7 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do post "/complete_auth" => "omniauth_callbacks#complete_auth" end
@@ -11,6 +14,7 @@ Rails.application.routes.draw do
     end
     resources :comments, defaults: { commentable: 'questions' }
     resources :attachments
+    resources :notices
     resources :answers do
       resources :comments, defaults: { commentable: 'answers' }
       member do

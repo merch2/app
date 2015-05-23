@@ -26,11 +26,15 @@ class Ability
     guest_abilities
     can     :create,     [Question, Answer, Comment]
     can     :update,     [Question, Answer], user: user
-    can     :destroy,    [Question, Answer], user: user
+    can     :destroy,    [Question, Answer, Notice], user: user
+    can     :create, Notice do |object|
+      object.new_record?
+    end
 
     can    [:update, :destroy], Comment, user_id: user.id
     can     :best, Answer
     cannot  :best, Answer, user_id: user.id
+
 
     alias_action :vote_up, :vote_down, :to => :vote
 
@@ -39,14 +43,11 @@ class Ability
     end
     cannot  :vote,    [Question, Answer], user_id: user.id
 
-    #can     :vote_down,    [Question, Answer] do |object|
-    #  object.votes.where(user_id: user.id).exists? == false
-    #end
-    #cannot  :vote_down,    [Question, Answer], user_id: user.id
 
     can     :unvote,       [Question, Answer] do |object|
       object.votes.where(user_id: user.id).exists? == true
     end
     cannot  :unvote,       [Question, Answer], user_id: user.id
+
   end
 end

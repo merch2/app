@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :authorizations
 
+  has_many :notices, dependent: :delete_all
+
   def self.find_for_oauth(auth)
     autorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return autorization.user if autorization
@@ -33,6 +35,12 @@ class User < ActiveRecord::Base
       #user.authorizations.create(provider: auth.provider, uid: auth.uid)
     end
     user
+  end
+
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.delay.digest(user)
+    end
   end
 
 end

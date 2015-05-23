@@ -13,4 +13,16 @@ class Answer < ActiveRecord::Base
   has_many   :comments,   as: :commentable, dependent: :destroy
 
   accepts_nested_attributes_for :attachments
+
+  after_create :send_to_question_owner
+  after_create :send_notices
+
+  private
+  def send_to_question_owner
+    OwnerMailer.send_owner(self).deliver_later
+  end
+
+  def send_notices
+    NoticeMailerJob.perform_later(self)
+  end
 end

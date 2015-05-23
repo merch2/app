@@ -22,6 +22,10 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+#gem 'delayed_job_active_record'
+gem 'whenever'
+gem 'sidekiq'
+gem 'sinatra', '>=1.3.0', require: nil
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

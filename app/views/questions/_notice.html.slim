@@ -1,0 +1,5 @@
+.notice
+  - if can?(:create, notice)
+    p = link_to "Подписаться", question_notices_path(@question.id), method: :post, remote: true
+  - if can?(:destroy, notice)
+    p = link_to "Отписаться", notice_path(notice), method: :delete, remote: true
