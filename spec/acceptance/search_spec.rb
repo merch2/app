@@ -2,9 +2,11 @@ require_relative 'acceptance_helper'
 
 feature 'Search' do
 
-  given!(:question) { create :question, title: 'title' }
+  given!(:question) { create :question, title: 'title', body: 'body' }
+  given!(:question2) { create :question, title: 'question2', body: 'nil' }
+  given!(:comment) { create :comment, commentable_id: question2.id, commentable_type: 'Question', body: 'title' }
 
-  scenario 'search all' do
+  scenario 'search all', js: true do
     ThinkingSphinx::Test.run do
       visit root_path
 
@@ -12,6 +14,21 @@ feature 'Search' do
       click_on 'search'
 
       expect(page).to have_link('title')
+      expect(page).to have_link('question2')
+    end
+  end
+
+  scenario 'search with condition', js: true do
+    ThinkingSphinx::Test.run do
+      visit root_path
+
+      select('comments', from: 'condition')
+      fill_in 'q', with: 'title'
+      click_on 'search'
+      save_and_open_page
+
+      expect(page).to_not have_link('title')
+      expect(page).to have_link('question2')
     end
   end
 
