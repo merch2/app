@@ -12,9 +12,10 @@ feature 'Search' do
 
       fill_in 'q', with: 'title'
       click_on 'search'
+      save_and_open_page
 
-      expect(page).to have_link('title')
-      expect(page).to have_link('question2')
+      expect(page).to have_content('question -title')
+      expect(page).to have_content('comment -title')
     end
   end
 
@@ -25,10 +26,9 @@ feature 'Search' do
       select('comments', from: 'condition')
       fill_in 'q', with: 'title'
       click_on 'search'
-      save_and_open_page
 
-      expect(page).to_not have_link('title')
-      expect(page).to have_link('question2')
+      expect(page).to have_content('comment -title')
+      expect(page).to_not have_content('question -title')
     end
   end
 
