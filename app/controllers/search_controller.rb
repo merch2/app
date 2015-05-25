@@ -5,15 +5,9 @@ class SearchController < ApplicationController
     @condition = params[:condition]
     if @condition == 'all'
       @result = ThinkingSphinx.search @query
-    elsif @condition == 'questions'
-      @result = Question.search @query
     else
-      @result = Question.search load_conditions
+      @result = @condition.singularize.capitalize.constantize.search @query
     end
   end
 
-  private
-  def load_conditions
-    { conditions: { @condition => @query } }
-  end
 end
