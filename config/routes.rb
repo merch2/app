@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do post "/complete_auth" => "omniauth_callbacks#complete_auth" end
   root 'questions#index'
+  get 'search' => 'search#search'
   resources :questions, shallow: true do
     member do
       get :vote_up
