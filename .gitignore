@@ -12,9 +12,8 @@
 !/log/.keep
 /tmp
 /public/uploads
-/config/database.yml
+config/database.yml
+config/private_pub.yml
 .idea
 /config/*.sphinx.conf
 /db/sphinx/
-config/private_pub.yml
-
